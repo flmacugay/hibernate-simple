@@ -8,18 +8,16 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.Test;
 
-public class CustomerTest {
+public class StudentTest {
 
 	@Test
-	public void entityToTwoTablesTest() {
+	public void embeddableTest() {
 		Configuration configuration = new Configuration();
-		configuration.addAnnotatedClass(Customer.class);
+		configuration.addAnnotatedClass(Student.class);
 
 		configuration.configure("hibernate.cfg.xml");
 
 		new SchemaExport(configuration).create(true, true);
-
-		Customer cowboy = new Customer("Cowboy", 1250, "Melbourne");
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties()).build();
@@ -30,11 +28,14 @@ public class CustomerTest {
 
 		session.beginTransaction();
 
-		{
-			session.save(cowboy);
-		}
+		StudentDetails lebronDetails = new StudentDetails(2016, "basketball",
+				"nba", "lbj@nba.com");
+		Student lebron = new Student("Lebron", lebronDetails);
+
+		session.save(lebron);
 
 		session.getTransaction().commit();
+
 	}
 
 }

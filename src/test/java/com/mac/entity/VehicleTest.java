@@ -8,18 +8,27 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.junit.Test;
 
-public class CustomerTest {
+public class VehicleTest {
 
 	@Test
-	public void entityToTwoTablesTest() {
+	public void inheritanceTest() {
 		Configuration configuration = new Configuration();
-		configuration.addAnnotatedClass(Customer.class);
+		configuration.addAnnotatedClass(Vehicle.class);
+		configuration.addAnnotatedClass(Car.class);
+		configuration.addAnnotatedClass(Sedan.class);
 
 		configuration.configure("hibernate.cfg.xml");
 
 		new SchemaExport(configuration).create(true, true);
 
-		Customer cowboy = new Customer("Cowboy", 1250, "Melbourne");
+		final Vehicle vehicle = new Vehicle("V6");
+
+		final Car car = new Car("Audi");
+		car.setEngine("Boost");
+
+		final Sedan sedan = new Sedan("Sport");
+		sedan.setEngine("V8");
+		sedan.setMake("Mazda");
 
 		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties()).build();
@@ -30,11 +39,14 @@ public class CustomerTest {
 
 		session.beginTransaction();
 
-		{
-			session.save(cowboy);
-		}
+		session.save(vehicle);
+
+		session.save(car);
+
+		session.save(sedan);
 
 		session.getTransaction().commit();
+
 	}
 
 }

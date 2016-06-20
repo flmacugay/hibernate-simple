@@ -15,7 +15,7 @@ import org.junit.Test;
 public class EmployeeTest {
 
 	@Test
-	public void test() {
+	public void annotationTest() {
 
 		Configuration configuration = new Configuration();
 		configuration.addAnnotatedClass(Employee.class);

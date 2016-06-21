@@ -1,4 +1,4 @@
-package com.mac.entity;
+package com.mac.entity.namedquery;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
